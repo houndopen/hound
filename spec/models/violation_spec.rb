@@ -9,7 +9,7 @@ describe Violation do
       new_message = "it's broken again"
       violation = build(:violation, messages: [existing_message])
 
-      messages = violation.add_messages([new_message])
+      messages = violation.add_message(new_message)
 
       expect(messages).to match_array([existing_message, new_message])
     end
@@ -24,16 +24,6 @@ describe Violation do
       messages = violation.messages
 
       expect(messages).to match_array([message])
-    end
-  end
-
-  describe "#on_changed_line?" do
-    it "delegates to line" do
-      violation = build(:violation, line: double("Line", changed?: false))
-
-      changed = violation.on_changed_line?
-
-      expect(changed).to eq false
     end
   end
 

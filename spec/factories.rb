@@ -4,10 +4,6 @@ FactoryGirl.define do
 
   factory :build do
     repo
-
-    trait :failed do
-      after(:build) { |build| build.violations << build(:violation) }
-    end
   end
 
   factory :file_review do

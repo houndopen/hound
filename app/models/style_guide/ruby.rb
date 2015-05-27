@@ -3,20 +3,16 @@ module StyleGuide
   class Ruby < Base
     DEFAULT_CONFIG_FILENAME = "ruby.yml"
 
-    def violations_in_file(file)
+    def file_review(file)
       if config.file_to_exclude?(file.filename)
-        []
+        ExcludedFileReview.new
       else
-        team.inspect_file(parsed_source(file)).map do |violation|
-          line = file.line_at(violation.line)
-
-          Violation.new(
-            filename: file.filename,
-            patch_position: line.patch_position,
-            line: line,
-            line_number: violation.line,
-            messages: [violation.message]
-          )
+        FileReview.new(filename: file.filename).tap do |file_review|
+          team.inspect_file(parsed_source(file)).each do |violation|
+            line = file.line_at(violation.line)
+            file_review.build_violation(line, violation.line, violation.message)
+          end
+          file_review.complete
         end
       end
     end

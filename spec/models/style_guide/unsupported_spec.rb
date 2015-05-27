@@ -1,14 +1,15 @@
 require "attr_extras"
-require "rails_helper"
+require "spec_helper"
 require "app/models/style_guide/base"
 require "app/models/style_guide/unsupported"
+require "app/models/excluded_file_review"
 
 describe StyleGuide::Unsupported do
-  describe "#violations_in_file" do
-    it "returns an empty array" do
+  describe "#file_review" do
+    it "returns file review without violations" do
       style_guide = StyleGuide::Unsupported.new({}, nil)
 
-      expect(style_guide.violations_in_file("file.txt")).to eq []
+      expect(style_guide.file_review("file.txt").violations).to eq []
     end
   end
 end
