@@ -190,8 +190,6 @@ describe StyleChecker, "#file_reviews" do
     end
   end
 
-  private
-
   def pull_request_violations(pull_request)
     StyleChecker.new(pull_request).file_reviews.
       flat_map(&:violations).

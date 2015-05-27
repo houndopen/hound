@@ -32,9 +32,8 @@ describe StyleGuide::CoffeeScript do
   end
 
   describe "#file_review" do
-    it "returns completed file review" do
-      repo_config = double("RepoConfig", enabled_for?: true, for: {})
-      style_guide = StyleGuide::CoffeeScript.new(repo_config, "bob")
+    it "returns a completed file review" do
+      style_guide = build_style_guide
       file = build_file("foo")
 
       result = style_guide.file_review(file)
@@ -45,8 +44,7 @@ describe StyleGuide::CoffeeScript do
     context "with default configuration" do
       context "for long line" do
         it "returns file review with violations" do
-          repo_config = double("RepoConfig", enabled_for?: true, for: {})
-          style_guide = StyleGuide::CoffeeScript.new(repo_config, "Ralph")
+          style_guide = build_style_guide
           file = build_file("1" * 81)
 
           violations = style_guide.file_review(file).violations
@@ -136,8 +134,7 @@ describe StyleGuide::CoffeeScript do
 
     context "given a `coffee.erb` file" do
       it "lints the file" do
-        repo_config = double("RepoConfig", enabled_for?: true, for: {})
-        style_guide = StyleGuide::CoffeeScript.new(repo_config, "Ralph")
+        style_guide = build_style_guide
         file = build_file("class strange_ClassNAME", "test.coffee.erb")
 
         violations = style_guide.file_review(file).violations
@@ -182,9 +179,14 @@ describe StyleGuide::CoffeeScript do
         changed?: true,
         content: "blah",
         number: 1,
-        patch_position: 2
+        patch_position: 2,
       )
-      double(:file, content: content, filename: filename, line_at: line)
+      double("GithubFile", content: content, filename: filename, line_at: line)
+    end
+
+    def build_style_guide
+      repo_config = double("RepoConfig", enabled_for?: true, for: {})
+      StyleGuide::CoffeeScript.new(repo_config, "RalphJoe")
     end
 
     def default_configuration

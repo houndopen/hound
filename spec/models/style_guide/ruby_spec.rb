@@ -3,7 +3,7 @@ require "rails_helper"
 describe StyleGuide::Ruby, "#file_review" do
   include ConfigurationHelper
 
-  it "returns completed file review" do
+  it "returns a completed file review" do
     repo_config = double("RepoConfig", enabled_for?: true, for: config)
     style_guide = StyleGuide::Ruby.new(repo_config, "bob")
 

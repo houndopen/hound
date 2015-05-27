@@ -13,7 +13,7 @@ describe FileReview do
         expected_violation = Violation.new(
           patch_position: 121,
           line_number: 1,
-          messages: ["hello"]
+          messages: ["hello"],
         )
 
         file_review.build_violation(line, 1, "hello")

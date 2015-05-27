@@ -8,7 +8,7 @@ describe BuildReport do
         commenter = stubbed_commenter(comment_on_violations: true)
         file_review = create(
           :file_review,
-          violations: build_list(:violation, 2)
+          violations: build_list(:violation, 2),
         )
         stubbed_github_api
         pull_request = stubbed_pull_request

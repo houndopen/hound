@@ -36,11 +36,15 @@ class AssociateViolationsWithFileReviews < ActiveRecord::Migration
 
   def associate_violations_with_file_reviews
     Violation.find_each do |violation|
-      file_review = FileReview.find_or_create_by!(
+      attributes = {
         build_id: violation.build_id,
         filename: violation.filename,
-        completed_at: Time.current
-      )
+      }
+
+      file_review = FileReview.find_or_create_by!(attributes) do |review|
+        review.completed_at = Time.current
+      end
+
       violation.update!(file_review_id: file_review.id)
     end
   end

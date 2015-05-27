@@ -2,7 +2,7 @@ require "rails_helper"
 
 describe StyleGuide::Scss do
   describe "#file_review" do
-    it "returns completed file review" do
+    it "returns a completed file review" do
       file = build_file("foo")
 
       result = build_style_guide.file_review(file)

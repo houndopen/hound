@@ -5,9 +5,10 @@ module StyleGuide
     ERB_TAGS = /<%.*%>/
 
     def file_review(file)
-      FileReview.new(filename: file.filename).tap do |file_review|
+      FileReview.new(filename: file.filename) do |file_review|
         content = content_for_file(file)
-        lint(content).map do |violation|
+
+        lint(content).each do |violation|
           line = file.line_at(violation["lineNumber"])
           file_review.build_violation(
             line,
@@ -15,6 +16,7 @@ module StyleGuide
             violation["message"]
           )
         end
+
         file_review.complete
       end
     end

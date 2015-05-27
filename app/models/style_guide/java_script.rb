@@ -3,7 +3,7 @@ module StyleGuide
     DEFAULT_CONFIG_FILENAME = "javascript.json"
 
     def file_review(file)
-      FileReview.new(filename: file.filename).tap do |file_review|
+      FileReview.new(filename: file.filename) do |file_review|
         Jshintrb.lint(file.content, config).compact.each do |violation|
           line = file.line_at(violation["line"])
           file_review.build_violation(

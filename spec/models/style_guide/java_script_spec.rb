@@ -4,7 +4,7 @@ describe StyleGuide::JavaScript do
   include ConfigurationHelper
 
   describe "#file_review" do
-    it "returns completed file review" do
+    it "returns a completed file review" do
       repo_config = double("RepoConfig", enabled_for?: true, for: {})
       style_guide = StyleGuide::JavaScript.new(repo_config, "bob")
       file = build_file

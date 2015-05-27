@@ -8,24 +8,29 @@ module StyleGuide
       if config.excluded_file?(file.filename)
         ExcludedFileReview.new
       else
-        FileReview.new(filename: file.filename).tap do |file_review|
-          runner = build_runner
-          runner.run([file.content])
-
-          runner.lints.map do |violation|
-            line = file.line_at(violation.location.line)
-            file_review.build_violation(
-              line,
-              violation.location.line,
-              violation.description
-            )
-          end
-          file_review.complete
-        end
+        perform_file_review(file)
       end
     end
 
     private
+
+    def perform_file_review(file)
+      FileReview.new(filename: file.filename) do |file_review|
+        runner = build_runner
+        runner.run([file.content])
+
+        runner.lints.each do |violation|
+          line = file.line_at(violation.location.line)
+          file_review.build_violation(
+            line,
+            violation.location.line,
+            violation.description
+          )
+        end
+
+        file_review.complete
+      end
+    end
 
     def build_runner
       SCSSLint::Runner.new(config)
